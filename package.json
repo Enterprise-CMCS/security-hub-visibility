@@ -1,0 +1,23 @@
+{
+  "name": "sync-aws-sechub-jira-issues",
+  "private": true,
+  "description": "A GitHub Action that syncs AWS Security Hub findings with Jira issues",
+  "main": "dist/index.js",
+  "scripts": {
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "build": "ncc build src/index.ts --source-map"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ben-harvey/typescript-gh-action.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@enterprise-cmcs/macpro-security-hub-sync": "^1.4.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1"
+  }
+}

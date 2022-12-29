@@ -1,0 +1,36 @@
+name: Test the Security Hub Visibility action
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # when possible, prefer using GitHub OIDC for AWS creds
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          # role-to-assume: ${{ secrets.OIDC_ROLE_TO_ASSUME }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - uses: ./ # uses the action in the current repo
+        with:
+          jira-token: ${{ secrets.JIRA_TOKEN }}
+          jira-username: ${{ secrets.JIRA_USERNAME }}
+          jira-project-key: BTSHV
+          jira-host: qmacbis.atlassian.net
+          jira-custom-fields: '{ "customfield_10006": 1197 }' # add issues to sprint 1197
+          jira-epic-key: BTSHV-13
+          jira-ignore-statuses: Done
+          aws-severities: CRITICAL, HIGH, MEDIUM
+          aws-region: us-east-1
