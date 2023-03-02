@@ -1,0 +1,10 @@
+
+repos:
+  - repo: local
+    hooks:
+      - id: build-check
+        name: Check that the module was was built if there are staged changes to the src folder
+        entry: bash -c "if ! git diff --no-patch --cached --exit-code src; then npm run build && git diff --no-patch --exit-code dist; fi"
+        language: system
+        verbose: true
+        require_serial: true

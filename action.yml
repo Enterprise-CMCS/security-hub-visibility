@@ -1,0 +1,39 @@
+name: 'Security Hub Visibility'
+description: 'Syncs AWS Security Hub findings with Jira issues'
+author: 'MAC-FC'
+inputs:
+  # Jira
+  jira-username:
+    description: 'Jira username that will be the reporter of issues created when syncing'
+    required: true
+  jira-token:
+    description: 'Jira token corresponding to the jira-username input with permission to manage issues for the target Jira project'
+    required: true
+  jira-project-key:
+    description: 'Jira project key where issues will be created'
+    required: true
+  jira-host:
+    description: 'Host of the target Jira instance'
+    required: true
+  jira-ignore-statuses:
+    description: 'Comma-separated list of Jira issue statuses that will be ignored when syncing'
+    required: false
+    default: 'Done'
+  jira-epic-key:
+    description: 'Jira epic key where issues will be created'
+    required: false
+  jira-custom-fields:
+    description: 'JSON string of Jira custom field keys/values, e.g. { "customfield_14117": "example-value" }'
+# AWS
+  aws-region:
+    description: 'Target AWS region for Security Hub findings'
+    required: false
+    default: 'us-east-1'
+  aws-severities:
+    description: 'Comma-separated list of Security Hub finding severities to sync'
+    required: false
+    default: 'CRITICAL,HIGH,MEDIUM'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
