@@ -1,8 +1,10 @@
 name: Test the Security Hub Visibility action
 
 on:
-  workflow_dispatch:
-
+  # workflow_dispatch:
+  push:
+    branches:
+      - bharvey-fix
 permissions:
   id-token: write
 
@@ -18,10 +20,10 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-region: ${{ secrets.AWS_REGION }}
-          # role-to-assume: ${{ secrets.OIDC_ROLE_TO_ASSUME }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: ${{ secrets.OIDC_ROLE_TO_ASSUME }}
+          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - uses: ./ # uses the action in the current repo
         with:
