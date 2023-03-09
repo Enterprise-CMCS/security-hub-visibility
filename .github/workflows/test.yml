@@ -1,4 +1,4 @@
-name: Test the Security Hub Visibility action
+name: Test SonarCloud
 
 on:
   # workflow_dispatch:
@@ -14,25 +14,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-
-      # when possible, prefer using GitHub OIDC for AWS creds
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ secrets.OIDC_IAM_ROLE_ARN }}
-          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
 
-      - uses: ./ # uses the action in the current repo
-        with:
-          jira-token: ${{ secrets.JIRA_TOKEN }}
-          jira-username: ${{ secrets.JIRA_USERNAME }}
-          jira-project-key: BTSHV
-          jira-host: qmacbis.atlassian.net
-          jira-custom-fields: '{ "customfield_10006": 1197 }' # add issues to sprint 1197
-          jira-epic-key: BTSHV-13
-          jira-ignore-statuses: Done
-          aws-severities: CRITICAL, HIGH, MEDIUM
-          aws-region: us-east-1
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
